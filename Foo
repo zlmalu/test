@@ -1,0 +1,25 @@
+class Foo {
+    mutex mtx1, mtx2;
+public:
+    Foo() {
+        mtx1.lock(), mtx2.lock();
+    }
+
+    void first(function<void()> printFirst) {
+        printFirst();
+        mtx1.unlock();
+    }
+
+    void second(function<void()> printSecond) {
+        mtx1.lock();
+        printSecond();
+        mtx1.unlock();
+        mtx2.unlock();
+    }
+
+    void third(function<void()> printThird) {
+        mtx2.lock();
+        printThird();
+        mtx2.unlock();
+    }
+};
