@@ -1,0 +1,54 @@
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        bool carry = false;  // 是否进位
+        ListNode* head = new ListNode(0);  // 头结点
+        ListNode* temp = head;  // 辅助结点，指向前一个结点
+        while (l1 || l2) {
+            // 当前结点值
+            int num = 0;
+
+            // l1的值加起来
+            if (l1) {
+                num += l1->val;
+                l1 = l1->next;
+            }
+            // l2的值加起来
+            if (l2) {
+                num += l2->val;
+                l2 = l2->next;
+            }
+
+            // 处理进位
+            if (carry) {
+                num++;
+            }
+
+            // 新结点，注意处理进位
+            ListNode* now = nullptr;
+            if (num >= 10) {
+                carry = true;
+                now = new ListNode(num % 10);
+            }
+            else {
+                carry = false;
+                now = new ListNode(num);
+            }
+
+            temp->next = now;
+            temp = temp->next;
+        }
+
+        // 处理进位，最后一个结点
+        if (carry) {
+            ListNode* now = new ListNode(1);
+            temp->next = now;
+        }
+
+        // 头结点后移
+        temp = head;
+        head = head->next;
+        delete temp;
+        return head;
+    }
+};
